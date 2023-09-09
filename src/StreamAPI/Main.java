@@ -3,6 +3,7 @@ package StreamAPI;
 import StreamAPI.Car.Car;
 import StreamAPI.Car.ColorEnum;
 import StreamAPI.Car.NameEnum;
+import StreamAPI.Employee.Employee;
 import StreamAPI.Student.GroupEnum;
 import StreamAPI.Student.PatronymicEnum;
 import StreamAPI.Student.Student;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 
 public class Main {
@@ -48,12 +50,11 @@ public class Main {
     }
 
     public static void initStudentList(List<Student> students, boolean points) {
-        if (points){
+        if (points) {
             for (int i = 0; i < 100; i++) {
                 students.add(new Student(getRandomFio(), getRandomAge(), getRandomGroup(), getRandomPoints()));
             }
-        }
-        else initStudentList(students);
+        } else initStudentList(students);
 
     }
 
@@ -74,15 +75,15 @@ public class Main {
         String randomName = StreamAPI.Student.NameEnum.values()[random.nextInt(NameEnum.values().length)].toString();
         String randomSurname = StreamAPI.Student.SurnameEnum.values()[random.nextInt(SurnameEnum.values().length)].toString();
         String randomPatronymic = StreamAPI.Student.PatronymicEnum.values()[random.nextInt(PatronymicEnum.values().length)].toString();
-        return randomSurname + " " + randomName +  " " + randomPatronymic;
+        return randomSurname + " " + randomName + " " + randomPatronymic;
     }
 
-    public static GroupEnum getRandomGroup(){
+    public static GroupEnum getRandomGroup() {
         Random random = new Random();
         return StreamAPI.Student.GroupEnum.values()[random.nextInt(GroupEnum.values().length)];
     }
 
-    public static int getRandomPoints(){
+    public static int getRandomPoints() {
         Random random = new Random();
         return random.nextInt(3, 300);
     }
@@ -110,5 +111,12 @@ public class Main {
 
         System.out.println(points);
 
+
+        List<Employee> employees = new ArrayList<>();
+        employees =  students1.stream()
+                .map(student -> new Employee(student.getFio().split(" ")[1], student.getSurname(), student.getFio().split(" ")[2], student.getAge()))
+                .collect(Collectors.toList());
+
+        System.out.println(employees);
     }
 }
